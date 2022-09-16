@@ -1,3 +1,5 @@
+const { ConnectionStates } = require("mongoose");
+const { listeners } = require("../models/blog.model");
 const blogModel = require("../models/blog.model");
 // const mongoose = require("mongoose");
 
@@ -26,16 +28,50 @@ module.exports.add = async (req, res) => {
 
 module.exports.get = async (req, res) => {
   try {
-    let filter = {};
-    if (req.query.tag) filter = { tags: { $in: [req.query.tag] } };
-    const blogs = await blogModel.find(filter).sort({ createdAt: -1 });
-    // console.log(blogs);
+    let pipeline = [],
+      blogs = [],
+      noOfPages = 0,
+      itemsPerPage = 20,
+      page = 1;
+    if (req.query.page) page = req.query.page;
+    if (req.query.tag)
+      pipeline.push({ $match: { tags: { $in: [req.query.tag] } } });
+    pipeline.push(
+      { $sort: { createdAt: -1 } },
+      {
+        $facet: {
+          beforePaginate: [
+            {
+              $count: "count",
+            },
+          ],
+          afterPaginate: [
+            {
+              $skip: itemsPerPage * (Number(page) - 1),
+            },
+            {
+              $limit: itemsPerPage,
+            },
+          ],
+        },
+      }
+    );
+    const data = await blogModel.aggregate(pipeline);
+    if (data.length) {
+      blogs = data[0].afterPaginate;
+      noOfPages = Math.ceil(
+        parseFloat(data[0].beforePaginate[0].count) / itemsPerPage
+      );
+    }
+    // console.log(noOfPages);
     res.status(200).json({
       success: true,
       message: "Fetched Blogs",
       blogs,
+      noOfPages,
     });
   } catch (error) {
+    console.log(error);
     res.status(500).json({ success: false, message: error.message });
   }
 };
