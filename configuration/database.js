@@ -6,13 +6,17 @@ const connectDB = () => {
     return;
   }
   mongoose.connect(
-    process.env.MONGODB_URL,
+    `${process.env[`MONGODB_URL_${process.env.MODE.toUpperCase()}`]}/${
+      process.env.MODE
+    }`,
     {
       useNewUrlParser: true,
     },
     (err) => {
       if (err) throw err;
-      console.log("Connected to mongodb.");
+      console.log("Connected to mongodb.", `${process.env[`MONGODB_URL_${process.env.MODE.toUpperCase()}`]}/${
+        process.env.MODE
+      }`);
     }
   );
 };
