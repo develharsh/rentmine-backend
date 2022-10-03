@@ -18,7 +18,7 @@ const propertySchema = new mongoose.Schema({
   monthlyMaintenance: String,
   maintenanceAmount: Number,
   availableFrom: Date,
-  preferredTenants: String,
+  preferredTenant: String,
   furnishing: String,
   parking: String,
   description: String,
