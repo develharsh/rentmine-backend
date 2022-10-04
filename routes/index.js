@@ -1,7 +1,8 @@
 const express = require("express");
 const router = express.Router();
-const propertyRoute = require("./property.route");
 const generalRoute = require("./general.route");
+const propertyRoute = require("./property.route");
+const userRoute = require("./user.route");
 
 // @Base Url
 router.use((req, _, next) => {
@@ -9,7 +10,8 @@ router.use((req, _, next) => {
   next();
 });
 
-router.use("/property", propertyRoute);
 router.use("/general", generalRoute);
+router.use("/property", propertyRoute);
+router.use("/user", userRoute);
 
 module.exports = router;

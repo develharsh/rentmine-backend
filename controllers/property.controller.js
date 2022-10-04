@@ -56,13 +56,14 @@ module.exports.add = async (req, res) => {
         throw { message: "Your Availability End Time is missing", code: 400 };
     }
     req.body.postedBy = req.user._id;
-    propertyModel.create(req.body);
+    req.body.approved = false;
+    await propertyModel.create(req.body);
     res.status(201).json({
       success: true,
       message: "Successfully Posted, It will be live in 12 Hrs.",
     });
   } catch (error) {
-    // console.log(error);
+    console.log(error);
     res.status(error.code).json({ success: false, message: error.message });
   }
 };
