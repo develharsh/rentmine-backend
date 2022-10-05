@@ -3,6 +3,7 @@ const otpModel = require("../models/otp.model");
 // const validator = require("../utils/validator");
 const utils = require("../utils");
 const jwt = require("jsonwebtoken");
+const SendSMS = require("../services/sms");
 
 module.exports.register = async (req, res) => {
   try {
@@ -22,6 +23,10 @@ module.exports.register = async (req, res) => {
       resetPassword: { totalOtps: 0 },
     });
     //sendSms with Otp
+    SendSMS(
+      `Your OTP to register on RentMine is ${otp} .`,
+      `+91${req.body.phone}`
+    );
     res.status(201).json({
       success: true,
       message: "OTP Sent Successfully.",
@@ -46,6 +51,11 @@ module.exports.sendOtp = async (req, res) => {
     ++otp[req.body.for]["totalOtps"];
     otp.save();
     //sendSms with Otp
+    SendSMS(
+      `Your OTP to ${req.body.for} on RentMine is ${otpValue} .`,
+      `+91${req.body.phone}`
+    );
+    // console.log(otpValue);
     res.status(200).json({
       success: true,
       message: "OTP Sent Successfully.",
