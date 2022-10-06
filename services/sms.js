@@ -23,7 +23,8 @@ function SendSMS(Message, PhoneNumber) {
   publishTextPromise
     .then(function (data) {
       // console.log(`Message ${params.Message} sent`);
-      console.log("MessageID is " + data.MessageId);
+      // console.log("MessageID is " + data.MessageId);
+      console.log("SMS", data);
     })
     .catch(function (err) {
       console.error(err, err.stack);
