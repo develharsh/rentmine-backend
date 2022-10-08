@@ -2,38 +2,29 @@ const userModel = require("../models/user.model");
 const otpModel = require("../models/otp.model");
 // const validator = require("../utils/validator");
 const utils = require("../utils");
-const jwt = require("jsonwebtoken");
+// const jwt = require("jsonwebtoken");
 const SendSMS = require("../services/sms");
 
-module.exports.register = async (req, res) => {
+module.exports.signin = async (req, res) => {
   try {
-    if (!req.body.phone) throw { message: "Phone is missing", code: 400 };
-    req.body.registeredVia = "web";
-    let user = await userModel.findOne({ phone: req.body.phone });
-    if (user)
-      throw {
-        message: "Phone is already registered, Please Try to Log In.",
-        code: 400,
-      };
-    user = await userModel.create(req.body);
-    const otp = utils.generateOtp();
-    otpModel.create({
-      user: user._id,
-      login: { totalOtps: 1, value: otp, trialLeft: 2 },
-      resetPassword: { totalOtps: 0 },
-    });
-    //sendSms with Otp
-    SendSMS(
-      `Your OTP to register on RentMine is ${otp} .`,
-      `+91${req.body.phone}`
-    );
-    res.status(201).json({
+    if (!req.body.token) throw { message: "Token is missing", code: 400 };
+    const decoded = await utils.getDecodedOAuthJwtGoogle(req.body.token);
+    if (decoded.success == false)
+      throw { message: "Something went wrong.", code: 400 };
+    decoded.data["points"] = 50;
+    const user = await userModel.findOne({ email: decoded.data.email });
+    if (user) {
+      user.name = decoded.data.name;
+      user.picture = decoded.data.picture;
+      user.save();
+    } else userModel.create(decoded.data);
+    res.status(200).json({
       success: true,
-      message: "OTP Sent Successfully.",
+      message: "User Signed In Successfully.",
     });
   } catch (error) {
     console.log(error);
-    res.status(error.code).json({ success: false, message: error.message });
+    res.status(400).json({ success: false, message: error.message });
   }
 };
 

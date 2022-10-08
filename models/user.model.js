@@ -2,14 +2,17 @@ const mongoose = require("mongoose");
 
 const userSchema = new mongoose.Schema(
   {
+    email: {
+      type: String,
+      unique: true,
+      required: true,
+    },
+    email_verified: { type: Boolean, required: true },
     name: String,
-    email: String,
-    phone: { type: String, unique: true }, //required
+    picture: String,
     state: String,
     city: String,
-    gender: String,
-    age: String,
-    registeredVia: String, //web, app
+    points: Number,
   },
   {
     timestamps: true,
