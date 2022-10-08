@@ -30,7 +30,7 @@ const propertySchema = new mongoose.Schema(
     nonVegAllowed: Boolean,
     gatedSecurity: Boolean,
     whoWillShowProperty: String,
-    secondaryNumber: String,
+    contactNumber: String,
     availableAmenities: {
       lift: Boolean,
       internetServices: Boolean,

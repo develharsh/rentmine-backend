@@ -4,6 +4,7 @@ const otpModel = require("../models/otp.model");
 const utils = require("../utils");
 // const jwt = require("jsonwebtoken");
 const SendSMS = require("../services/sms");
+const sendEmail = require("../utils/sendEmail");
 
 module.exports.signin = async (req, res) => {
   try {
@@ -12,19 +13,37 @@ module.exports.signin = async (req, res) => {
     if (decoded.success == false)
       throw { message: "Something went wrong.", code: 400 };
     decoded.data["points"] = 50;
-    const user = await userModel.findOne({ email: decoded.data.email });
+    let user = await userModel.findOne({ email: decoded.data.email });
     if (user) {
       user.name = decoded.data.name;
       user.picture = decoded.data.picture;
       user.save();
-    } else userModel.create(decoded.data);
+    } else {
+      user = await userModel.create(decoded.data);
+      sendEmail("userOnboard", {
+        email: user.email,
+        name: user.name,
+      });
+    }
     res.status(200).json({
       success: true,
       message: "User Signed In Successfully.",
+      data: user,
     });
   } catch (error) {
     console.log(error);
     res.status(400).json({ success: false, message: error.message });
+  }
+};
+module.exports.loadSession = (req, res) => {
+  try {
+    res.status(200).json({
+      success: true,
+      data: req.user,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ success: false, message: error.message });
   }
 };
 

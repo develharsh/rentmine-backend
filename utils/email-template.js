@@ -1,19 +1,19 @@
 module.exports.visitor = (message) => {
   return {
-    subject: `Visit Alert - Harshvsinghme`,
+    subject: `Visit Alert - Rentmine`,
     body: `Visit Alert Type: ${message}`,
   };
 };
 
 module.exports.event = (message) => {
   return {
-    subject: `Event Alert - Harshvsinghme`,
+    subject: `Event Alert - Rentmine`,
     body: `Event Alert Type: ${message}`,
   };
 };
-module.exports.addBlog = (topic, slug) => {
+module.exports.userOnboard = (name) => {
   return {
-    subject: topic,
-    body: `<p>Dear Subscriber,<br/>My New Blog on: ${topic} is out now.<br/>You can read it: <a href="http://localhost:3000/blog/${slug}">here</a></p>`,
+    subject: "Welcome to Rentmine - India's Leading Rental Apartment Finder",
+    body: `<p>Dear ${name},<br/>Thanks for Registering to Rentmine.<br/>If you face any issue, Please, Let us know at +91-8077015752 or rentmine@gmail.com</p>`,
   };
 };

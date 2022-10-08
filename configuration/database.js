@@ -6,7 +6,7 @@ const connectDB = () => {
     return;
   }
   mongoose.connect(
-    `${process.env[`MONGODB_URL_${process.env.MODE.toUpperCase()}`]}/${
+    `${process.env[`NODE_APP_MONGODB_URL_${process.env.NODE_APP_MODE.toUpperCase()}`]}/${
       process.env.MODE
     }`,
     {
@@ -14,8 +14,8 @@ const connectDB = () => {
     },
     (err) => {
       if (err) throw err;
-      console.log("Connected to mongodb.", `${process.env[`MONGODB_URL_${process.env.MODE.toUpperCase()}`]}/${
-        process.env.MODE
+      console.log("Connected to mongodb.", `${process.env[`NODE_APP_MONGODB_URL_${process.env.NODE_APP_MODE.toUpperCase()}`]}/${
+        process.env.NODE_APP_MODE
       }`);
     }
   );

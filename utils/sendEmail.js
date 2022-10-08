@@ -10,8 +10,8 @@ module.exports = (templateId, payload) => {
     case "event":
       template = EmailTemplate.event(payload.message);
       break;
-    case "addBlog":
-      template = EmailTemplate.addBlog(payload.topic, payload.slug);
+    case "userOnboard":
+      template = EmailTemplate.userOnboard(payload.name);
       break;
     default:
       console.log("W");
