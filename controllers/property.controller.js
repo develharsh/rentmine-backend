@@ -45,8 +45,8 @@ module.exports.add = async (req, res) => {
       throw { message: "Gated Security, is missing", code: 400 };
     if (!req.body.whoWillShowProperty)
       throw { message: "Who will Show Propery, is missing", code: 400 };
-    if (!req.body.contactNumber)
-      throw { message: "Contact Number, is missing", code: 400 };
+    // if (!req.body.secondaryPhone)
+    //   throw { message: "Secondary Contact Number, is missing", code: 400 };
     if (!req.body.yourAvailability?.days)
       throw { message: "Your Availability Days, is missing", code: 400 };
     if (typeof req.body.yourAvailability?.allday != "boolean")
