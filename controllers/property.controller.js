@@ -3,7 +3,6 @@ const validator = require("../utils/validator");
 
 module.exports.add = async (req, res) => {
   try {
-    return console.log(req.body, req.files);
     if (!req.body.apartmentType)
       throw { message: "Apartment Type is missing", code: 400 };
     if (!req.body.bhkType) throw { message: "BHK Type is missing", code: 400 };
@@ -44,20 +43,42 @@ module.exports.add = async (req, res) => {
       throw { message: "Non Veg Allowed, is missing", code: 400 };
     if (typeof req.body.gatedSecurity != "boolean")
       throw { message: "Gated Security, is missing", code: 400 };
-    if (!req.body.whoWillShowProperty)
-      throw { message: "Who will Show Propery, is missing", code: 400 };
     if (!req.body.phone)
       throw { message: "Phone Number, is missing", code: 400 };
-    if (!req.body.yourAvailability?.days)
-      throw { message: "Your Availability Days, is missing", code: 400 };
-    if (typeof req.body.yourAvailability?.allday != "boolean")
-      throw { message: "Your Availability Time is missing", code: 400 };
-    if (req.body.yourAvailability?.allday == false) {
-      if (!req.body.yourAvailability?.startTime)
-        throw { message: "Your Availability Start Time is missing", code: 400 };
-      if (!req.body.yourAvailability?.endTime)
-        throw { message: "Your Availability End Time is missing", code: 400 };
-    }
+    if (typeof req.body.availableAmenities.lift != "boolean")
+      throw { message: "Lift has invalid value", code: 400 };
+    if (typeof req.body.availableAmenities.internetServices != "boolean")
+      throw { message: "Internet Services has invalid value", code: 400 };
+    if (typeof req.body.availableAmenities.airConditioner != "boolean")
+      throw { message: "Air Conditioner has invalid value", code: 400 };
+    if (typeof req.body.availableAmenities.clubHouse != "boolean")
+      throw { message: "Club House has invalid value", code: 400 };
+    if (typeof req.body.availableAmenities.interCom != "boolean")
+      throw { message: "interCom has invalid value", code: 400 };
+    if (typeof req.body.availableAmenities.swimmingPool != "boolean")
+      throw { message: "swimmingPool has invalid value", code: 400 };
+    if (typeof req.body.availableAmenities.childrenPlayArea != "boolean")
+      throw { message: "childrenPlayArea has invalid value", code: 400 };
+    if (typeof req.body.availableAmenities.fireSafety != "boolean")
+      throw { message: "fireSafety has invalid value", code: 400 };
+    if (typeof req.body.availableAmenities.servantRoom != "boolean")
+      throw { message: "servantRoom has invalid value", code: 400 };
+    if (typeof req.body.availableAmenities.shoppingCenter != "boolean")
+      throw { message: "shoppingCenter has invalid value", code: 400 };
+    if (typeof req.body.availableAmenities.gasPipeline != "boolean")
+      throw { message: "gasPipeline has invalid value", code: 400 };
+    if (typeof req.body.availableAmenities.park != "boolean")
+      throw { message: "park has invalid value", code: 400 };
+    if (typeof req.body.availableAmenities.rainWaterHarvesting != "boolean")
+      throw { message: "rainWaterHarvesting has invalid value", code: 400 };
+    if (typeof req.body.availableAmenities.sewageTreatmentPlant != "boolean")
+      throw { message: "sewageTreatmentPlant has invalid value", code: 400 };
+    if (typeof req.body.availableAmenities.houseKeeping != "boolean")
+      throw { message: "houseKeeping has invalid value", code: 400 };
+    if (typeof req.body.availableAmenities.powerBackup != "boolean")
+      throw { message: "powerBackup has invalid value", code: 400 };
+    if (typeof req.body.availableAmenities.visitorParking != "boolean")
+      throw { message: "visitorParking has invalid value", code: 400 };
     req.body.postedBy = req.user._id;
     req.body.approved = false;
     await propertyModel.create(req.body);
