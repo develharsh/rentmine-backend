@@ -51,7 +51,6 @@ const propertySchema = new mongoose.Schema(
       visitorParking: Boolean,
     },
     photos: Array,
-    videos: Array,
     yourAvailability: {
       days: String,
       allday: Boolean, //7am-10pm

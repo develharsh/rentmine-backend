@@ -3,6 +3,7 @@ const validator = require("../utils/validator");
 
 module.exports.add = async (req, res) => {
   try {
+    return console.log(req.body, req.files);
     if (!req.body.apartmentType)
       throw { message: "Apartment Type is missing", code: 400 };
     if (!req.body.bhkType) throw { message: "BHK Type is missing", code: 400 };
