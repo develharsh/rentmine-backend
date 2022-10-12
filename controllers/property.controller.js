@@ -1,8 +1,14 @@
 const propertyModel = require("../models/property.model");
 const validator = require("../utils/validator");
+const { saveImages } = require("../services/s3");
 
 module.exports.add = async (req, res) => {
   try {
+    req.body.photos = await saveImages(
+      req.body.photos,
+      req.user._id.toString(),
+      "properties"
+    );
     if (!req.body.apartmentType)
       throw { message: "Apartment Type is missing", code: 400 };
     if (!req.body.bhkType) throw { message: "BHK Type is missing", code: 400 };
