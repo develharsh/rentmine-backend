@@ -7,7 +7,7 @@ const connectDB = () => {
   }
   mongoose.connect(
     `${process.env[`NODE_APP_MONGODB_URL_${process.env.NODE_APP_MODE.toUpperCase()}`]}/${
-      process.env.MODE
+      process.env.NODE_APP_MODE
     }`,
     {
       useNewUrlParser: true,
