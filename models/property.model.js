@@ -29,8 +29,7 @@ const propertySchema = new mongoose.Schema(
     gym: Boolean,
     nonVegAllowed: Boolean,
     gatedSecurity: Boolean,
-    whoWillShowProperty: String,
-    secondaryPhone: String,
+    phone: String,
     availableAmenities: {
       lift: Boolean,
       internetServices: Boolean,
@@ -51,13 +50,6 @@ const propertySchema = new mongoose.Schema(
       visitorParking: Boolean,
     },
     photos: Array,
-    videos: Array,
-    yourAvailability: {
-      days: String,
-      allday: Boolean, //7am-10pm
-      startTime: String,
-      endTime: String,
-    },
     postedBy: {
       type: mongoose.Types.ObjectId,
       ref: "User",

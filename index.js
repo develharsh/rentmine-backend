@@ -1,6 +1,6 @@
 const express = require("express");
 const path = require("path");
-// const fileUpload = require("express-fileupload");
+const fileUpload = require("express-fileupload");
 require("dotenv").config({
   path: path.join(__dirname, "/configuration", ".env"),
 });
@@ -15,7 +15,7 @@ const logger = require("morgan");
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true, limit: "5mb" }));
-// app.use(fileUpload());
+app.use(fileUpload());
 
 require("./configuration/database")();
 

@@ -2,8 +2,8 @@
 var AWS = require("aws-sdk");
 // Set region
 AWS.config.update({
-  accessKeyId: "AKIA5LJJKKS4F6KYWZ6Q",
-  secretAccessKey: "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",
+  accessKeyId: process.env.NODE_APP_AWS_ACCESSKEYID,
+  secretAccessKey: process.env.NODE_APP_AWS_SECRETACCESSKEY,
   region: "ap-south-1",
 });
 
