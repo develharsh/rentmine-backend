@@ -1,6 +1,6 @@
 const propertyModel = require("../models/property.model");
 const validator = require("../utils/validator");
-const { saveImages } = require("../services/s3");
+const { saveImages, deleteImages } = require("../services/s3");
 
 module.exports.add = async (req, res) => {
   try {
@@ -93,7 +93,8 @@ module.exports.add = async (req, res) => {
       message: "Successfully Posted, It will be live in 12 Hrs.",
     });
   } catch (error) {
-    console.log(error);
+    console.log(error, req.body.photos);
+    if (req.body.photos?.length) deleteImages(req.body.photos);
     res.status(error.code).json({ success: false, message: error.message });
   }
 };

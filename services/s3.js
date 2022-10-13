@@ -12,6 +12,7 @@ function getRandomIntInclusive(min, max) {
 }
 
 async function saveImage(buf, Key, ext, folder) {
+  // console.log(Key)
   return new Promise(async (resolve) => {
     try {
       const uploadURL = await s3
@@ -22,7 +23,7 @@ async function saveImage(buf, Key, ext, folder) {
           ContentType: `image/${ext}`,
         })
         .promise();
-    //   console.log("uploadURL", uploadURL);
+      // console.log("uploadURL", uploadURL);
       delete uploadURL.key;
       delete uploadURL.ETag;
       resolve(uploadURL);
@@ -45,8 +46,8 @@ module.exports.saveImages = async (photos, title, folder) => {
     photos.forEach((photo) => {
       const data = photo.replace(/^data:image\/\w+;base64,/, "");
       const extension = photo.split(";base64")[0].replace("data:image/", "");
-      const name = title.replace(/\s+/, "_").slice(0, 20);
-      const Key = `${name}_${Date.now()}_${getRandomIntInclusive(
+      // const name = title.replace(/\s+/, "_").slice(0, 20);
+      const Key = `${title}_${Date.now()}_${getRandomIntInclusive(
         1,
         1000000
       )}.${extension}`;
@@ -55,7 +56,7 @@ module.exports.saveImages = async (photos, title, folder) => {
       promises.push(saved);
     });
     Promise.all(promises).then((result) => {
-    //   console.log(result, "result");
+      //   console.log(result, "result");
       resolve(result);
     });
   });
@@ -63,7 +64,7 @@ module.exports.saveImages = async (photos, title, folder) => {
 
 module.exports.deleteImages = function (images) {
   images.forEach((each) =>
-    s3Client.deleteObject(
+    s3.deleteObject(
       {
         Bucket: each.Bucket,
         Key: each.Key,
@@ -75,6 +76,7 @@ module.exports.deleteImages = function (images) {
             err,
             data
           );
+        else console.log("S3 deleted file", each.Key);
       }
     )
   );
