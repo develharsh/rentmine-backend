@@ -98,3 +98,14 @@ module.exports.add = async (req, res) => {
     res.status(error.code).json({ success: false, message: error.message });
   }
 };
+
+module.exports.list = async (_, res) => {
+  try {
+    const properties = await propertyModel.aggregate([{ $match: {} }]);
+    res.status(200).json({ success: true, data: properties });
+  } catch (error) {
+    error.code = error.code ? error.code : 500;
+    console.log(error);
+    res.status(error.code).json({ success: false, message: error.message });
+  }
+};
