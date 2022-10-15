@@ -98,3 +98,26 @@ module.exports.add = async (req, res) => {
     res.status(error.code).json({ success: false, message: error.message });
   }
 };
+
+module.exports.list = async (req, res) => {
+  try {
+    let matchObj = {};
+    let query = [{ $match: matchObj }];
+    if (req.query.apartmentType)
+      matchObj["apartmentType"] = req.query.apartmentType;
+    if (req.query.bhkType) matchObj["bhkType"] = req.query.bhkType;
+    if (req.query.state) matchObj["state"] = req.query.state;
+    if (req.query.city) matchObj["city"] = req.query.city;
+    if (req.query.rent) matchObj["rent"] = { $lte: Number(req.query.rent) };
+    if (req.query.availableFrom)
+      matchObj["availableFrom"] = { $gte: req.query.availableFrom };
+    if (req.query.furnishing) matchObj["furnishing"] = req.query.furnishing;
+    console.log(req.query, JSON.stringify(query));
+    const properties = await propertyModel.aggregate(query);
+    res.status(200).json({ success: true, data: properties });
+  } catch (error) {
+    error.code = error.code ? error.code : 500;
+    console.log(error);
+    res.status(error.code).json({ success: false, message: error.message });
+  }
+};
