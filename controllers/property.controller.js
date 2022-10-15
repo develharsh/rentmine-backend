@@ -110,9 +110,11 @@ module.exports.list = async (req, res) => {
     if (req.query.city) matchObj["city"] = req.query.city;
     if (req.query.rent) matchObj["rent"] = { $lte: Number(req.query.rent) };
     if (req.query.availableFrom)
-      matchObj["availableFrom"] = { $gte: req.query.availableFrom };
+      matchObj["availableFrom"] = {
+        $lte: new Date(`${req.query.availableFrom}T18:30:00.000Z`),
+      };
     if (req.query.furnishing) matchObj["furnishing"] = req.query.furnishing;
-    console.log(req.query, JSON.stringify(query));
+    // console.log(req.query, JSON.stringify(query));
     const properties = await propertyModel.aggregate(query);
     res.status(200).json({ success: true, data: properties });
   } catch (error) {
